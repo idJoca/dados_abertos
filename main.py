@@ -5,7 +5,7 @@ import sys
 ano = sys.argv[2]
 person_status_csv = "legislatura_" + ano + "/person_status_" + ano + ".csv"
 
-with open(person_status_csv, 'a') as csv_file:
+with open(person_status_csv, 'w') as csv_file:
     writer = csv.writer(csv_file)
     writer.writerow(['Nome', 'Status'])
 
@@ -38,7 +38,7 @@ def get_proposicoes(name):
         return None
 
 names_dict = {}
-with open(sys.argv[1], newline='') as names:
+with open(sys.argv[1], 'r') as names:
     name_reader = csv.DictReader(names, delimiter=',', quotechar='"')
     for row in name_reader:
         name = row['Nome']

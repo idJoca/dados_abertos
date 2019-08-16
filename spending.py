@@ -32,8 +32,9 @@ def get_spendings(year):
             continue
 
 # From 2007 to 2019 (end point not included)
-years = range(2007, 2020)
+years = range(2013, 2020)
 for year in years:
+    print(year)
     whole_csv, unique_csv = get_spendings(year)
     whole_csv_name = 'legislatura_' + str(year) + '/gastos_deputados_' + str(year) + '.csv'
     unique_csv_name = 'legislatura_' + str(year) + '/nomes_deputados_' + str(year) + '.csv'

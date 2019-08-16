@@ -4,15 +4,14 @@ library("gplots")
 library("plot3D")
 library("plot3Drgl")
 getwd()
-propostas_deputados = read.csv("../../../dados_abertos-master/legislatura_todas/propostas.csv")
-gastos_deputados = read.csv("../../../dados_abertos-master/legislatura_todas/gastos.csv")
+propostas_deputados = read.csv("legislatura_todas/propostas.csv")
+gastos_deputados = read.csv("legislatura_todas/gastos.csv")
 rowCondition <- apply(gastos_deputados[,-1],1,function(x) any(x[-length(x)] == 'Total'))
+single_year <- apply(gastos_deputados,1,function(x) x["Ano"] == 2009)
 gastos <- gastos_deputados[rowCondition,]
 sums.year <- aggregate(as.double(gastos$Valor),gastos["Ano"],sum)
-party.cost <- aggregate(as.double(gastos$Valor),gastos["Partido"],sum)
-party.propostas <- aggregate(as.double(propostas_deputados$Tramitando),propostas_deputados["Partido"],sum)
-print(party.propostas)
-print(party.cost)
+party.cost <- aggregate(as.double(gastos[single_year,]$Valor),gastos[single_year,]["Partido"],sum)
+party.propostas <- aggregate(as.double(propostas_deputados[single_year,]$Tramitando),propostas_deputados[single_year,]["Partido"],sum)
 x <- propostas_deputados$Total
 y <- as.double(gastos$Valor)[0:6851]
 z <- as.numeric(propostas_deputados$Ano)
@@ -33,7 +32,8 @@ scatter2D(x, y, type='h')
 scatter2D(party.cost$x, party.propostas$x)
 text2D(party.propostas$x, party.cost$x, party.cost$Partido,
 	 colvar=party.propostas$x,
-	 xlab="Nr. Propostas", ylab="Gastos Partido")
+	 xlab="Nr. Propostas", ylab="Gastos Partido",
+     cex=0.7)
 abline(lm(party.cost$x ~ party.propostas$x), col="green")
 abline(h=mean(party.cost$x), col="blue")
 abline(v=mean(party.propostas$x), col="red")
